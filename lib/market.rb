@@ -48,4 +48,34 @@ class Market
     end
   end
 
+  def sell(item, num)
+    @vendors.reduce(num) do |number_sold, vendor|
+      
+      if total_inventory[item] == 0 || total_inventory[item] < number_sold
+
+        return false
+
+      elsif vendor.inventory[item] != 0 && vendor.inventory[item] <= number_sold
+
+        sold_out_vendor = @vendors.find do |vendor|
+          vendor.inventory.keys.include?(item)
+        end
+
+        number_sold -= sold_out_vendor.inventory[item]
+        sold_out_vendor.inventory[item] = 0
+        number_sold
+
+      elsif vendor.inventory[item] != 0 && vendor.inventory[item] > number_sold
+
+        vendor.inventory[item] -= number_sold
+        return true
+
+      else
+
+        number_sold
+
+      end
+    end
+  end
+
 end
