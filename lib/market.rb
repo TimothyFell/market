@@ -32,4 +32,20 @@ class Market
     end.flatten.uniq.sort
   end
 
+  def total_inventory
+    @vendors.reduce({}) do |inventory_total, vendor|
+      if inventory_total == {}
+        inventory_total = vendor.inventory
+      else
+        merge_inventories(inventory_total, vendor)
+      end
+    end
+  end
+
+  def merge_inventories(inventory_total, vendor)
+    inventory_total.merge(vendor.inventory) do |key, oldval, newval|
+      oldval + newval
+    end
+  end
+
 end
