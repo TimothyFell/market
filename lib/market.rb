@@ -26,4 +26,10 @@ class Market
     end
   end
 
+  def sorted_item_list
+    @vendors.reduce([]) do |items, vendor|
+      items << vendor.inventory.keys
+    end.flatten.uniq.sort
+  end
+
 end
